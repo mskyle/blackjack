@@ -48,4 +48,4 @@ end
 players = ["you", "me", "dealer"]
 deck = build_deck
 
-hit_prompt
+puts deck
