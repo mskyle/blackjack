@@ -33,8 +33,21 @@ def hit_prompt
   end
 end
 
-def score
-  # calculates the player's current score
+def score(hand)
+  score = 0
+  values = []
+  hand.each { |card| values << card.chop }
+  if values.include?"A"
+    puts "Shit! An ace! Or two aces!"
+  else
+    values.each do |value|
+      if value.to_i > 0
+        score += value.to_i
+      else
+        score += 10
+      end
+    end
+  end
 end
 
 def initial_deal(deck, players)
@@ -45,7 +58,7 @@ def initial_deal(deck, players)
   end
 end
 
-players = ["you", "me", "dealer"]
-deck = build_deck
+# players = ["you", "me", "dealer"]
+# deck = build_deck
 
-puts deck
+score(["10♥","5♥"])
