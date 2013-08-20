@@ -2,6 +2,7 @@ class Player
   def initialize(name)
     @hand_array = []
     @name = name
+    @bust = false
   end
 
   def name
@@ -11,6 +12,14 @@ class Player
   def hand
     # returns hand
     @hand_array
+  end
+
+  def bust
+    @bust = true
+  end
+
+  def is_bust?
+    @bust
   end
 
   def hit?

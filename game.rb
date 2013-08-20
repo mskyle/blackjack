@@ -37,6 +37,7 @@ class Game
       puts "you have 21"
     elsif score(player.hand) > 21
       puts "you bust"  
+      player.bust
     else
       if player.hit?
         @deck.deal(player.hand)
@@ -54,6 +55,7 @@ class Game
       puts "Dealers has 21"
     elsif score(@dealer.hand) > 21
       puts "Dealer busts"  
+      @dealer.bust
     else
       if score(@dealer.hand) < 17
         @deck.deal(@dealer.hand)
@@ -62,5 +64,42 @@ class Game
     end
   end
 
+  def score(hand)
+    score = 0
+    values = []
+    hand.each { |card| values << card.chop }
+    # if values.include?"A"
+    #   puts "Shit! An ace!"
+    # else
+      values.each do |value|
+        if value.to_i > 0
+          score += value.to_i
+        else
+          score += 10
+        end
+      # end
+    end
+    return score
+  end
+
+  def find_winners
+    if @dealer.is_bust?
+      puts "everybody wins!"
+    else
+      @players.each do |player|
+        if player.is_bust?
+          puts "Sorry, #{player.name}, you lose."
+        elsif score(player.hand) > score(@dealer.hand)
+          puts "#{player.name} wins"
+        elsif score(player.hand) == score(@dealer.hand)
+          puts "pushes"
+        else
+          puts "Sorry, #{player.name}, you lose."
+        end
+      end
+    end
+  end
+
+  
 
 end
