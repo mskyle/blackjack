@@ -4,6 +4,10 @@ class Player
     @name = name
   end
 
+  def name
+    @name
+  end
+
   def hand
     # returns hand
     @hand_array
@@ -22,4 +26,6 @@ class Player
       end
     end
   end
+
+
 end
