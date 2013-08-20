@@ -1,44 +1,15 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
-SUITS = ['♠', '♣', '♥', '♦']
-VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
-
-def build_deck
-  deck = []
-
-  SUITS.each do |suit|
-    VALUES.each do |value|
-      deck.push(value + suit)
-    end
-  end
-
-  deck.shuffle
-end
-
-def deal
-  # deals the next card in the deck
-end
-
-def hit_prompt
-  puts "Do you want to hit or stand?"
-  input = gets.chomp
-  if input == "hit" 
-    return true
-  elsif input == "stand"
-    return false
-  else
-    puts "I'm sorry, I didn't understand."
-    hit_prompt
-  end
-end
+require './player.rb'
+require './deck.rb'
 
 def score(hand)
   score = 0
   values = []
   hand.each { |card| values << card.chop }
   if values.include?"A"
-    puts "Shit! An ace! Or two aces!"
+    puts "Shit! An ace!"
   else
     values.each do |value|
       if value.to_i > 0
@@ -48,17 +19,42 @@ def score(hand)
       end
     end
   end
+  return score
 end
 
+# in case of future game with multiple players, this would be handy
 def initial_deal(deck, players)
   2.times do
     players.each do |player|
-      deal
+      deal(player, deck)
     end
   end
 end
 
-# players = ["you", "me", "dealer"]
-# deck = build_deck
+kyle = Player.new("Kyle")
 
-score(["10♥","5♥"])
+my_deck = Deck.new
+
+2.times {my_deck.deal(kyle.hand)}
+
+
+
+
+def dealer_turn(deck)
+  puts player.hand.inspect
+  puts score(player.hand)
+  if score(player.hand) == 21
+    puts "you have 21"
+  elsif score(player.hand) > 21
+    puts "you bust"  
+  else
+    if player.hit?
+      deck.deal(player.hand)
+      player_turn(player, deck)
+    else
+      puts "your turn is over your score is #{score(player.hand)}" 
+    end
+  end
+end
+
+player_turn(kyle, my_deck)
