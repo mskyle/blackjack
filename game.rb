@@ -109,6 +109,14 @@ class Game
     end
   end
 
-  
+  def play_the_game
+    add_players
+    players.each { |player| puts player.name }
+    initial_deal
+    players.each { |player| puts player.hand.inspect }
+    players.each { |player| turn(player) }
+    dealer_turn
+    find_winners
+  end
 
 end
