@@ -20,4 +20,3 @@ class Deck
   end
 
 end
-
