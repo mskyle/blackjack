@@ -68,33 +68,42 @@ class Game
     score = 0
     values = []
     hand.each { |card| values << card.chop }
-    # if values.include?"A"
-    #   puts "Shit! An ace!"
-    # else
-      values.each do |value|
-        if value.to_i > 0
-          score += value.to_i
+    values.each do |value|
+      if value.to_i > 0
+        score += value.to_i
+      else
+        if value == "A"
+          score += 1
         else
           score += 10
         end
-      # end
+      end
+    end
+    if values.include?("A") && score <= 11
+      score += 10
     end
     return score
   end
 
   def find_winners
     if @dealer.is_bust?
-      puts "everybody wins!"
+      @players.each do |player|
+        unless player.is_bust?
+          puts "#{player.name} wins with #{score(player.hand)}"
+        else
+          puts "pushes"
+        end
+      end
     else
       @players.each do |player|
         if player.is_bust?
-          puts "Sorry, #{player.name}, you lose."
+          puts "Sorry, #{player.name}, you lose with #{score(player.hand)}."
         elsif score(player.hand) > score(@dealer.hand)
           puts "#{player.name} wins"
         elsif score(player.hand) == score(@dealer.hand)
           puts "pushes"
         else
-          puts "Sorry, #{player.name}, you lose."
+          puts "Sorry, #{player.name}, you lose with #{score(player.hand)}."
         end
       end
     end
