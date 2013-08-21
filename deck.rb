@@ -15,12 +15,8 @@ class Deck
     @deck.shuffle!
   end
 
-  attr_accessor :deck
-
   def deal(hand)
-    card = @deck.pop
-    hand << card
-    puts "#{card} is dealt"
+    hand << @deck.pop
   end
 
 end
