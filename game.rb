@@ -19,12 +19,14 @@ class Game
     end
   end
 
+
+
   def initial_deal
     2.times do
       @players.each do |player|
-        @deck.deal(player.hand)
+        deal(player.hand)
       end
-      @deck.deal(@dealer.hand)
+      deal(@dealer.hand)
     end
     puts "* * * * * * * * * * * * * * * * * * * * * * * * * "
     puts "*                                               *"
@@ -49,7 +51,7 @@ class Game
       end_turn
     else
       if player.hit?
-        @deck.deal(player.hand)
+        deal(player.hand)
         turn(player)
       else
         puts "your turn is over your score is #{player.score}" 
@@ -75,7 +77,7 @@ class Game
       end_turn
     else
       if @dealer.score < 17
-        @deck.deal(@dealer.hand)
+        deal(@dealer.hand)
         dealer_turn
       end
     end
