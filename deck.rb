@@ -16,7 +16,9 @@ class Deck
   end
 
   def deal(hand)
-    hand << @deck.pop
+    card = @deck.pop
+    hand << card
+    puts "#{card} is dealt"
   end
 
 end
