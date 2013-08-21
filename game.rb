@@ -31,11 +31,10 @@ class Game
   end
 
   def turn(player)
-    puts player.hand.inspect
-    puts "#{player.name}, your score is #{score(player.hand)}"
-    if score(player.hand) == 21
+    player.display
+    if player.score == 21
       puts "you have 21"
-    elsif score(player.hand) > 21
+    elsif player.score > 21
       puts "you bust"  
       player.bust = true
     else
@@ -43,53 +42,33 @@ class Game
         @deck.deal(player.hand)
         turn(player)
       else
-        puts "your turn is over your score is #{score(player.hand)}" 
+        puts "your turn is over your score is #{player.score}" 
       end
     end
   end
 
   def dealer_turn
-    puts @dealer.hand.inspect
-    puts "Dealer's score is #{score(@dealer.hand)}"
-    if score(@dealer.hand) == 21
+    @dealer.display
+    if @dealer.score == 21
       puts "Dealers has 21"
-    elsif score(@dealer.hand) > 21
+    elsif @dealer.score > 21
       puts "Dealer busts"  
       @dealer.bust = true
     else
-      if score(@dealer.hand) < 17
+      if @dealer.score < 17
         @deck.deal(@dealer.hand)
         dealer_turn
       end
     end
   end
 
-  def score(hand)
-    score = 0
-    values = []
-    hand.each { |card| values << card.chop }
-    values.each do |value|
-      if value.to_i > 0
-        score += value.to_i
-      else
-        if value == "A"
-          score += 1
-        else
-          score += 10
-        end
-      end
-    end
-    if values.include?("A") && score <= 11
-      score += 10
-    end
-    return score
-  end
+
 
   def find_winners
     if @dealer.bust
       @players.each do |player|
         unless player.bust
-          puts "#{player.name} wins with #{score(player.hand)}"
+          puts "#{player.name} wins with #{player.score}"
         else
           puts "pushes"
         end
@@ -97,13 +76,13 @@ class Game
     else
       @players.each do |player|
         if player.bust
-          puts "Sorry, #{player.name}, you lose with #{score(player.hand)}."
-        elsif score(player.hand) > score(@dealer.hand)
+          puts "Sorry, #{player.name}, you lose with #{player.score}."
+        elsif player.score > @dealer.score
           puts "#{player.name} wins"
-        elsif score(player.hand) == score(@dealer.hand)
+        elsif player.score == @dealer
           puts "pushes"
         else
-          puts "Sorry, #{player.name}, you lose with #{score(player.hand)}."
+          puts "Sorry, #{player.name}, you lose with #{player.score}."
         end
       end
     end

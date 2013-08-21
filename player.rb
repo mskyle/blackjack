@@ -24,6 +24,32 @@ class Player
   def display
     puts "#{name}, you have:"
     puts @hand * " "
-    puts "your score is"
+    puts "your score is #{score}"
+    puts ""
+    puts "***********************"
+    puts ""
   end
+
+  def score
+    score = 0
+    values = []
+    @hand.each { |card| values << card.chop }
+    values.each do |value|
+      if value.to_i > 0
+        score += value.to_i
+      else
+        if value == "A"
+          score += 1
+        else
+          score += 10
+        end
+      end
+    end
+    if values.include?("A") && score <= 11
+      score += 10
+    end
+    return score
+  end
+
+
 end
