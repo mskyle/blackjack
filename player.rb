@@ -9,7 +9,7 @@ class Player
 
   def hit?
     while true
-      puts "Do you want to hit or stand? h or s?"
+      print "Do you want to hit or stand? h or s? "
       input = gets.chomp
       if input.downcase == "h"
         return true
@@ -22,11 +22,9 @@ class Player
   end
 
   def display
-    puts "#{name}, you have:"
+    puts "#{name} has:"
     puts @hand * " "
     puts "your score is #{score}"
-    puts ""
-    puts "***********************"
     puts ""
   end
 
@@ -50,6 +48,5 @@ class Player
     end
     return score
   end
-
 
 end
