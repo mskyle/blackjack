@@ -22,7 +22,7 @@ class Game
   def deal(player)
     card = @deck.deck.pop
     player.hand << card
-    puts "#{card} is dealt to #{player.name}"
+    puts "#{player.name} was dealt #{card}"
     puts ""
   end
 
@@ -48,10 +48,10 @@ class Game
     @dealer.display
     player.display
     if player.score == 21
-      puts "you have 21"
+      puts "Blackjack!!"
       end_turn
     elsif player.score > 21
-      puts "you bust"  
+      puts "Busted!!"  
       player.bust = true
       end_turn
     else
@@ -92,6 +92,7 @@ class Game
 
   def find_winners
     puts "Dealer has #{@dealer.score}"
+    puts ""
     if @dealer.bust
       @players.each do |player|
         unless player.bust

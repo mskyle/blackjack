@@ -17,10 +17,4 @@ class Deck
 
   attr_accessor :deck
 
-  def deal(hand)
-    card = @deck.pop
-    hand << card
-    puts "#{card} is dealt"
-  end
-
 end
