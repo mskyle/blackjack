@@ -24,7 +24,7 @@ class Player
   def display
     puts "#{name} has:"
     puts @hand * " "
-    puts "your score is #{score}"
+    puts "#{name}'s score is #{score}"
     puts ""
   end
 

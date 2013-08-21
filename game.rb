@@ -19,12 +19,19 @@ class Game
     end
   end
 
+  def deal(player)
+    card = @deck.deck.pop
+    player.hand << card
+    puts "#{card} is dealt to #{player.name}"
+    puts ""
+  end
+
   def initial_deal
     2.times do
       @players.each do |player|
-        @deck.deal(player.hand)
+        deal(player)
       end
-      @deck.deal(@dealer.hand)
+      deal(@dealer)
     end
     puts "* * * * * * * * * * * * * * * * * * * * * * * * * "
     puts "*                                               *"
@@ -38,8 +45,8 @@ class Game
 
   def turn(player)
     puts "*************** #{player.name}'s turn ************"
-    player.display
     @dealer.display
+    player.display
     if player.score == 21
       puts "you have 21"
       end_turn
@@ -49,10 +56,10 @@ class Game
       end_turn
     else
       if player.hit?
-        @deck.deal(player.hand)
+        deal(player)
         turn(player)
       else
-        puts "your turn is over your score is #{player.score}" 
+        puts "Your turn is over your score is #{player.score}" 
         end_turn
       end
     end
@@ -60,7 +67,7 @@ class Game
 
   def end_turn
     puts ""
-    puts "**************** TURN OVER *****************"
+    puts "**************** END TURN *****************"
     puts ""
   end
 
@@ -75,7 +82,7 @@ class Game
       end_turn
     else
       if @dealer.score < 17
-        @deck.deal(@dealer.hand)
+        deal(@dealer)
         dealer_turn
       end
     end
@@ -84,12 +91,13 @@ class Game
 
 
   def find_winners
+    puts "Dealer has #{@dealer.score}"
     if @dealer.bust
       @players.each do |player|
         unless player.bust
           puts "#{player.name} wins with #{player.score}"
         else
-          puts "#{player.name} ties"
+          puts "#{player.name} ties with #{player.score}"
         end
       end
     else
@@ -97,9 +105,9 @@ class Game
         if player.bust
           puts "Sorry, #{player.name}, you lose with #{player.score}."
         elsif player.score > @dealer.score
-          puts "#{player.name} wins"
+          puts "#{player.name} wins with #{player.score}"
         elsif player.score == @dealer.score
-          puts "#{player.name} ties"
+          puts "#{player.name} ties with #{player.score}"
         else
           puts "Sorry, #{player.name}, you lose with #{player.score}."
         end

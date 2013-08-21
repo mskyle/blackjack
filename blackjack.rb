@@ -10,3 +10,5 @@ my_deck = Deck.new
 game = Game.new(my_deck)
 
 game.play_the_game
+
+# puts my_deck.deck
