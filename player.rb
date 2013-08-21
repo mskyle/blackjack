@@ -22,6 +22,8 @@ class Player
   end
 
   def display
-    puts @hand_array
+    puts "#{name}, you have:"
+    puts @hand * " "
+    puts "your score is"
   end
 end
