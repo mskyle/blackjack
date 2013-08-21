@@ -37,7 +37,7 @@ class Game
       puts "you have 21"
     elsif score(player.hand) > 21
       puts "you bust"  
-      player.bust
+      player.bust = true
     else
       if player.hit?
         @deck.deal(player.hand)
@@ -55,7 +55,7 @@ class Game
       puts "Dealers has 21"
     elsif score(@dealer.hand) > 21
       puts "Dealer busts"  
-      @dealer.bust
+      @dealer.bust = true
     else
       if score(@dealer.hand) < 17
         @deck.deal(@dealer.hand)
@@ -86,9 +86,9 @@ class Game
   end
 
   def find_winners
-    if @dealer.is_bust?
+    if @dealer.bust
       @players.each do |player|
-        unless player.is_bust?
+        unless player.bust
           puts "#{player.name} wins with #{score(player.hand)}"
         else
           puts "pushes"
@@ -96,7 +96,7 @@ class Game
       end
     else
       @players.each do |player|
-        if player.is_bust?
+        if player.bust
           puts "Sorry, #{player.name}, you lose with #{score(player.hand)}."
         elsif score(player.hand) > score(@dealer.hand)
           puts "#{player.name} wins"

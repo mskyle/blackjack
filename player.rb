@@ -1,26 +1,11 @@
 class Player
   def initialize(name)
-    @hand_array = []
+    @hand = []
     @name = name
     @bust = false
   end
 
-  def name
-    @name
-  end
-
-  def hand
-    # returns hand
-    @hand_array
-  end
-
-  def bust
-    @bust = true
-  end
-
-  def is_bust?
-    @bust
-  end
+  attr_accessor :hand, :name, :bust
 
   def hit?
     while true
@@ -34,5 +19,9 @@ class Player
         puts "I'm sorry, that's not a valid input."
       end
     end
+  end
+
+  def display
+    puts @hand_array
   end
 end
