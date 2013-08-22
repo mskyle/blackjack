@@ -25,7 +25,7 @@ class Player
     puts "#{name} has:"
     puts @hand * " "
     puts "#{name}'s score is #{score}"
-    puts ""
+    puts
   end
 
   def score
@@ -46,7 +46,10 @@ class Player
     if values.include?("A") && score <= 11
       score += 10
     end
-    return score
+
+    # Only use return if it's in the middle of a method,
+    # otherwise Ruby uses the value of the last expression
+    score
   end
 
 end

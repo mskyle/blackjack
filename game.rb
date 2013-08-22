@@ -6,24 +6,48 @@ class Game
     @dealer = Player.new("Dealer")
   end
 
-  def players
-    @players
-  end
+  # attr_reader will create the `players` method that returns @players
+  attr_reader :players
 
   def add_players
-    puts "Welcome, players! Type your name to play: "
-    while @players.length < 4 && (name = gets.chomp) != "play"
+    # Some issues here:
+    # If the user types 'play' as the first name the game starts with 0 players
+    # Once you reach 4 players, it stills ends with a prompt for the next player
+    # The game accepts blank strings as names
+
+    # Possible solution:
+
+    print "Welcome, players! "
+
+    while @players.empty?
+      print "Type your name to play: "
+      add_player(gets.strip) # `strip` removes whitespace from start and end of string
+    end
+
+    while @players.length < 4
       puts "Next player enter your name. To start game, type 'play.'"
-      player = Player.new(name)
-      @players << player
+
+      input = gets.strip
+      break if input == 'play'
+
+      add_player(input)
+    end
+  end
+
+  # Method validates user's name before adding them to the game
+  def add_player(name)
+    unless name.empty?
+      @players << Player.new(name)
+    else
+      puts "Name cannot be blank."
     end
   end
 
   def deal(player)
-    card = @deck.deck.pop
+    card = @deck.next_card
     player.hand << card
     puts "#{player.name} was dealt #{card}"
-    puts ""
+    puts # puts without arguments will output a blank newline
   end
 
   def initial_deal
@@ -51,24 +75,24 @@ class Game
       puts "Blackjack!!"
       end_turn
     elsif player.score > 21
-      puts "Busted!!"  
+      puts "Busted!!"
       player.bust = true
       end_turn
     else
       if player.hit?
         deal(player)
-        turn(player)
+        turn(player) # Recursion!!!!!!! :)
       else
-        puts "Your turn is over your score is #{player.score}" 
+        puts "Your turn is over your score is #{player.score}"
         end_turn
       end
     end
   end
 
   def end_turn
-    puts ""
+    puts
     puts "**************** END TURN *****************"
-    puts ""
+    puts
   end
 
   def dealer_turn
@@ -77,7 +101,7 @@ class Game
       puts "Dealer has 21"
       end_turn
     elsif @dealer.score > 21
-      puts "Dealer busts"  
+      puts "Dealer busts"
       @dealer.bust = true
       end_turn
     else
@@ -92,7 +116,8 @@ class Game
 
   def find_winners
     puts "Dealer has #{@dealer.score}"
-    puts ""
+    puts
+
     if @dealer.bust
       @players.each do |player|
         unless player.bust
