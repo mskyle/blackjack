@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
-require './player.rb'
-require './deck.rb'
-require './game.rb'
+# Can optionally use require_relative if you're including files relative to this one.
+require_relative 'player'
+require_relative 'deck'
+require_relative 'game'
 
 my_deck = Deck.new
 

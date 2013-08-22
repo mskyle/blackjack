@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Deck
 
   SUITS = ['♠', '♣', '♥', '♦']
@@ -15,6 +16,10 @@ class Deck
     @deck.shuffle!
   end
 
-  attr_accessor :deck
+  # Rather than exposing our internal array, let's just define a `next_card` method
+  # that returns the top card from the deck.
+  def next_card
+    @deck.pop
+  end
 
 end
