@@ -1,67 +1,16 @@
 class Game
-
-  def initialize(deck)
-    @players = []
+  def initialize(deck, player, dealer)
     @deck = deck
-    @dealer = Player.new("Dealer")
-  end
-
-  def players
-    @players
-  end
-
-  def add_players
-    puts "Welcome, players! Type your name to play: "
-    while @players.length < 4 && (name = gets.chomp) != "play"
-      puts "Next player enter your name. To start game, type 'play.'"
-      player = Player.new(name)
-      @players << player
-    end
-  end
-
-  def deal(player)
-    card = @deck.deck.pop
-    player.hand << card
-    puts "#{player.name} was dealt #{card}"
-    puts ""
+    @player = player
+    @dealer = dealer
   end
 
   def initial_deal
+    puts
+    puts "* * * * * * * Welcome to BLACKJACK !!! * * * * * * * "
     2.times do
-      @players.each do |player|
-        deal(player)
-      end
-      deal(@dealer)
-    end
-    puts "* * * * * * * * * * * * * * * * * * * * * * * * * "
-    puts "*                                               *"
-    puts "*                                               *"
-    puts "************** Dealing cards..... ***************"
-    puts "************* Let the game begin ****************"
-    puts "*                                               *"
-    puts "*                                               *"
-    puts "* * * * * * * * * * * * * * * * * * * * * * * * * "
-  end
-
-  def turn(player)
-    puts "*************** #{player.name}'s turn ************"
-    @dealer.display
-    player.display
-    if player.score == 21
-      puts "Blackjack!!"
-      end_turn
-    elsif player.score > 21
-      puts "Busted!!"  
-      player.bust = true
-      end_turn
-    else
-      if player.hit?
-        deal(player)
-        turn(player)
-      else
-        puts "Your turn is over your score is #{player.score}" 
-        end_turn
-      end
+      @player.hit
+      @dealer.hit
     end
   end
 
@@ -71,60 +20,79 @@ class Game
     puts ""
   end
 
-  def dealer_turn
-    @dealer.display
-    if @dealer.score == 21
-      puts "Dealer has 21"
+  def player_turn
+    puts
+    puts "*************** #{@player.name}'s turn ************"
+    output_scores
+    puts "Hit or stay? H/S"
+    input = gets.chomp
+    if @player.hand_score == 21
+      puts "Blackjack!!"
       end_turn
-    elsif @dealer.score > 21
-      puts "Dealer busts"  
-      @dealer.bust = true
+    elsif @player.hand_score > 21
+      puts "Busted!!"
+      @player.is_bust
       end_turn
     else
-      if @dealer.score < 17
-        deal(@dealer)
+      if input == "H"
+        @player.hit
+        player_turn
+      else
+        puts "Your turn is over your score is #{@player.hand_score}"
+        end_turn
+      end
+    end
+  end
+
+  def output_scores
+    puts "dealer score is #{@dealer.hand_score}"
+    puts "player score is #{@player.hand_score}"
+  end
+
+  def dealer_turn
+    output_scores
+    if @dealer.hand_score == 21
+      puts "Dealer has 21"
+      end_turn
+    elsif @dealer.hand_score > 21
+      puts "Dealer busts"
+      @dealer.is_bust
+      end_turn
+    else
+      if @dealer.hand_score < 17
+        @dealer.hit
         dealer_turn
       end
     end
   end
 
-
-
   def find_winners
-    puts "Dealer has #{@dealer.score}"
+    puts "Dealer has #{@dealer.hand_score}"
     puts ""
     if @dealer.bust
-      @players.each do |player|
-        unless player.bust
-          puts "#{player.name} wins with #{player.score}"
-        else
-          puts "#{player.name} ties with #{player.score}"
-        end
+      if @player.bust
+        puts "player wins with #{@player.hand_score}"
+      else
+        puts "dealer ties with #{@dealer.hand_score}"
       end
+
     else
-      @players.each do |player|
-        if player.bust
-          puts "Sorry, #{player.name}, you lose with #{player.score}."
-        elsif player.score > @dealer.score
-          puts "#{player.name} wins with #{player.score}"
-        elsif player.score == @dealer.score
-          puts "#{player.name} ties with #{player.score}"
-        else
-          puts "Sorry, #{player.name}, you lose with #{player.score}."
-        end
+      if @player.bust
+        puts "Sorry, player, you lose with #{@player.hand_score}."
+      elsif @player.hand_score > @dealer.hand_score
+        puts "player wins with #{@player.hand_score}"
+      elsif @player.hand_score == @dealer.hand_score
+        puts "player ties with #{@player.hand_score}"
+      else
+        puts "Sorry, player, you lose with #{@player.hand_score}."
       end
     end
   end
 
-  def play_the_game
-    puts "Welcome to Blackjack at the Broken Toy Casino!"
-    add_players
+  def play_game
     initial_deal
-    players.each { |player| player.display }
-    @dealer.display
-    players.each { |player| turn(player) }
+    player_turn
     dealer_turn
     find_winners
   end
-
 end
